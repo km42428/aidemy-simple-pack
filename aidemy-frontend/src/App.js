@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import AceEditor from "react-ace";
 
+// マスターデータ
 const exercises = [
   {
     exerciseId: "exercise1",
@@ -14,12 +15,17 @@ const exercises = [
     script: "# 3 + 5 の結果を出力しましょう\n"
   }
 ];
+
+// exerciseIdからexerciseを取得する関数
 function getExercise(exerciseId) {
   return exercises.find(el => {
     return el.exerciseId === exerciseId;
   });
 }
 
+// 表示される土台の部分
+// Link: クリック時にtoで指定されたページに遷移
+// Route: 特定のurlの時に表示するコンポーネントを定義
 const App = () => (
   <BrowserRouter>
     <div>
@@ -36,6 +42,8 @@ const App = () => (
     </div>
   </BrowserRouter>
 );
+
+// exerciseの一覧
 const Exercises = () => (
   <div>
     <h2>Exercises</h2>
@@ -44,7 +52,10 @@ const Exercises = () => (
       {(exercises || []).map(exercise => {
         return (
           <li key={exercise.exerciseId}>
-            <Link to={"/exercises/" + exercise.exerciseId} key={exercise.exerciseId}>
+            <Link
+              to={"/exercises/" + exercise.exerciseId}
+              key={exercise.exerciseId}
+            >
               {exercise.title}
             </Link>
           </li>
@@ -53,6 +64,7 @@ const Exercises = () => (
     </ul>
   </div>
 );
+// 特定のexerciseの演習部分
 class Exercise extends Component {
   constructor() {
     super();
@@ -61,10 +73,11 @@ class Exercise extends Component {
       title: "",
       script: ""
     };
-    this.onChange = this.onChange.bind(this)
+    this.onChange = this.onChange.bind(this); // はじめにonChangeをthisにbindしておく
   }
 
-  async componentDidMount() {
+  // コンポーネントのレンダリングが終了したら呼び出される
+  componentDidMount() {
     const exercise = getExercise(this.props.match.params.id);
     if (exercise) {
       this.setState({
@@ -72,7 +85,7 @@ class Exercise extends Component {
         title: exercise.title,
         script: exercise.script
       });
-      return
+      return;
     }
     this.setState({
       exerciseId: "",
@@ -81,14 +94,19 @@ class Exercise extends Component {
     });
   }
 
+  // エディタに入力があるたびに呼び出され、stateを変更する
   onChange(newValue) {
     this.setState({
       script: newValue
     });
   }
+
+  // RUN押下時に呼び出される関数。現状alertを表示するのみ。
   run() {
-    alert(`以下のコードが実行されます\n\n${this.state.script}`)
+    alert(`以下のコードが実行されます\n\n${this.state.script}`);
   }
+
+  // 実際の表示部分
   render() {
     return (
       <div>
