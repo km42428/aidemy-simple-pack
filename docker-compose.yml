@@ -1,0 +1,7 @@
+version: "3"
+services:
+  aidemy-frontend:
+    build: ./aidemy-frontend
+    image: aidemy-frontend
+    ports:
+      - 5000:5000
