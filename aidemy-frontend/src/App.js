@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import AceEditor from "react-ace";
+// react-aceのテーマ情報
+import "brace/mode/python";
+import "brace/snippets/python";
+import "brace/theme/tomorrow";
 import axios from "axios";
 
 const apiUrl = "http://localhost:4000/v1";
@@ -47,26 +51,46 @@ const App = () => (
 );
 
 // exerciseの一覧
-const Exercises = () => (
-  <div>
-    <h2>Exercises</h2>
-    <p>エクササイズの一覧です</p>
-    <ul>
-      {(exercises || []).map(exercise => {
-        return (
-          <li key={exercise.exerciseId}>
-            <Link
-              to={"/exercises/" + exercise.exerciseId}
-              key={exercise.exerciseId}
-            >
-              {exercise.title}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  </div>
-);
+class Exercises extends Component {
+  constructor() {
+    super();
+    this.state = {
+      exercises: []
+    };
+  }
+
+  // コンポーネントのレンダリングが終了したら呼び出される
+  componentDidMount() {
+    this.setState({
+      exercises
+    });
+  }
+
+  // 実際の表示部分
+  render() {
+    return (
+      <div>
+        <h2>Exercises</h2>
+        <p>エクササイズの一覧です</p>
+        <ul>
+          {(this.state.exercises || []).map(exercise => {
+            return (
+              <li key={exercise.exerciseId}>
+                <Link
+                  to={"/exercises/" + exercise.exerciseId}
+                  key={exercise.exerciseId}
+                >
+                  {exercise.title}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+}
+
 // 特定のexerciseの演習部分
 class Exercise extends Component {
   constructor() {
