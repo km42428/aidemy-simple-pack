@@ -119,8 +119,6 @@ class Exercise extends Component {
     const exercise = (await axios.get(
       `${apiUrl}/exercises/${this.props.match.params.id}`
     )).data;
-    console.log(exercise);
-    // console.log(exercise.exerciseId);
     if (exercise) {
       this.setState({
         exerciseId: exercise.exerciseId,
