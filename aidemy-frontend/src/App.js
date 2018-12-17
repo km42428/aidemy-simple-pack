@@ -9,6 +9,7 @@ import axios from "axios";
 
 const apiUrl = "http://localhost:4000/v1";
 
+/*
 // マスターデータ
 const exercises = [
   {
@@ -29,6 +30,7 @@ function getExercise(exerciseId) {
     return el.exerciseId === exerciseId;
   });
 }
+*/
 
 // 表示される土台の部分
 // Link: クリック時にtoで指定されたページに遷移
@@ -60,7 +62,15 @@ class Exercises extends Component {
   }
 
   // コンポーネントのレンダリングが終了したら呼び出される
-  componentDidMount() {
+  async componentDidMount() {
+    const exercises = (await axios.get(`${apiUrl}/exercises/`)).data;
+    // APIにアクセスできない場合に備えて条件分岐
+    if (!exercises) {
+      this.setState({
+        exercises: []
+      });
+      return;
+    }
     this.setState({
       exercises
     });
