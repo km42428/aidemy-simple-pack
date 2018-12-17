@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import AceEditor from "react-ace";
+import axios from "axios";
+
+const apiUrl = "http://localhost:4000/v1";
 
 // マスターデータ
 const exercises = [
@@ -77,8 +80,13 @@ class Exercise extends Component {
   }
 
   // コンポーネントのレンダリングが終了したら呼び出される
-  componentDidMount() {
-    const exercise = getExercise(this.props.match.params.id);
+  async componentDidMount() {
+    // const exercise = getExercise(this.props.match.params.id);
+    const exercise = (await axios.get(
+      `${apiUrl}/exercises/${this.props.match.params.id}`
+    )).data;
+    console.log(exercise);
+    // console.log(exercise.exerciseId);
     if (exercise) {
       this.setState({
         exerciseId: exercise.exerciseId,
