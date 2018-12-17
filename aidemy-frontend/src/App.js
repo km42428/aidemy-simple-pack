@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import AceEditor from "react-ace";
+// react-aceのテーマ情報
+import "brace/mode/python";
+import "brace/snippets/python";
+import "brace/theme/tomorrow";
 
 // マスターデータ
 const exercises = [
